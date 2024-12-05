@@ -12,3 +12,13 @@ abstract class Solver(day: Int, version: String) {
     abstract fun part1(): String
     abstract fun part2(): String
 }
+
+class Grid(private var input: List<String>)
+{
+    fun get(x: Int, y: Int): Char? {
+        if(x >= 0 && x < input[0].length && y >=0 && y < input.size) {
+            return input[y][x]
+        }
+        return null
+    }
+}
