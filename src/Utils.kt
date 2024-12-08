@@ -24,9 +24,12 @@ class Grid(private var input: MutableList<String>)
 
     fun set(x: Int, y: Int, c: Char)
     {
-        val chars = input[y].toMutableList()
-        chars[x] = c
-        input[y] = chars.joinToString(separator = "")
+        if(x >= 0 && x < input[0].length && y >=0 && y < input.size)
+        {
+            val chars = input[y].toMutableList()
+            chars[x] = c
+            input[y] = chars.joinToString(separator = "")
+        }
     }
 
     fun find(c: Char): Point? {
@@ -64,5 +67,43 @@ class Grid(private var input: MutableList<String>)
         }
     }
 
+    fun iterator(): Iterator<GridEntry>
+    {
+        return object : Iterator<GridEntry>
+        {
+            var cY = 0
+            var cX = 0
+
+            override fun hasNext(): Boolean
+            {
+                return !(cY >= input.size-1 && cX >= input[0].length-1)
+            }
+
+            override fun next(): GridEntry {
+                val result = GridEntry(get(cX, cY)!!, Point(cX, cY))
+                if(cX == input[0].length - 1) {
+                    cY ++
+                    cX = 0
+                } else {
+                    cX ++
+                }
+                return result
+            }
+
+        }
+    }
+
     class Point(var x: Int, var y: Int)
+    {
+        override fun toString(): String{
+            return "($x,$y)"
+        }
+    }
+
+    class GridEntry(var value: Char, var point: Point)
+    {
+        override fun toString(): String{
+            return "$value (${point.x},${point.y})"
+        }
+    }
 }
