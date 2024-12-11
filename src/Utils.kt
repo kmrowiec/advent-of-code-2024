@@ -93,10 +93,40 @@ class Grid(private var input: MutableList<String>)
         }
     }
 
+    fun getNWSE(point: Point): List<GridEntry>
+    {
+        val result = mutableListOf<GridEntry>()
+        val s = get(point.x, point.y + 1)
+        if(s != null) {
+            result.add(GridEntry(s, Point(point.x, point.y + 1)))
+        }
+        val n = get(point.x, point.y - 1)
+        if(n != null) {
+            result.add(GridEntry(n, Point(point.x, point.y - 1)))
+        }
+        val e = get(point.x + 1, point.y)
+        if(e != null) {
+            result.add(GridEntry(e, Point(point.x + 1, point.y)))
+        }
+        val w = get(point.x - 1, point.y)
+        if(w != null) {
+            result.add(GridEntry(w, Point(point.x - 1, point.y)))
+        }
+        return result
+    }
+
     class Point(var x: Int, var y: Int)
     {
         override fun toString(): String{
             return "($x,$y)"
+        }
+
+        override fun equals(other: Any?): Boolean {
+            return other is Point && (other.x == x) and (other.y == y);
+        }
+
+        override fun hashCode(): Int {
+            return "${this.x}${this.y}".hashCode()
         }
     }
 
